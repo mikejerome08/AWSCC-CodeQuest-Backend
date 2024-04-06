@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Project</title>
+</head>
+<body>
+    <h1>PASSWORD MANAGER</h1>
+    <h2>Add New Password</h2>
+    <form action="{{ url_for('main.add_password') }}" method="POST">
+        Website: <input type="text" name="website" required><br>
+        Email: <input type="text" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Enter a valid email address" required><br>
+        Password: <input type="password" name="password" required><br>
+        <input type="submit" value="Add Password">
+    </form>
+
+    <h2>Your Saved Passwords</h2>
+    <ul>
+        {% for password in passwords %}
+            <li>{{ password.website }} - {{ password.email }} - {{ password.password }}</li>
+            <form action="{{ url_for('main.update_password', id=password.id) }}" method="POST">
+                Website: <input type="text" name="website" value="{{ password.website }}" required><br>
+                Email: <input type="text" name="email" value="{{ password.email }}" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Enter a valid email address" required><br>
+                Password: <input type="password" name="password" value="{{ password.password }}" required><br>
+                <input type="submit" value="Update">
+            </form>
+            <form action="{{ url_for('main.delete_password', id=password.id) }}" method="POST">
+                <input type="submit" value="Delete">
+            </form>
+        {% endfor %}
+    </ul>
+</body>
+</html>
